@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Audio preview",
+    "description": "Sidebar audio player: a zoomable waveform (click/drag seek, A-B loop, playback rate, channel switch) plus a live spectrum (bars / line / waterfall), backed by its own HTTP Range media route so any size plays and seeks."
+  }
+}

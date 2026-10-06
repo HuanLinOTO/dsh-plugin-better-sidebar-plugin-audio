@@ -1,0 +1,12 @@
+# dsh-plugin-better-sidebar-plugin-audio bundle layer: inserts the plugin row.
+# Loaded by `dsh plugin --profile <name> add @huanlin/dsh-plugin-better-sidebar-plugin-audio`.
+# `name` is the package entry; the Loader resolves it from the profile's node_modules.
+#
+# The plugin occupies no page and no built-in type: the host half only exposes a
+# read-only, Range-capable media route (`/audio-preview/meta`,
+# `/audio-preview/media`) and the client half registers one file viewer with
+# better-sidebar for the audio extensions. Host config is empty on purpose —
+# every knob lives in the viewer's own toolbar.
+- insert:
+    - id: better-sidebar-audio
+      name: '@huanlin/dsh-plugin-better-sidebar-plugin-audio'

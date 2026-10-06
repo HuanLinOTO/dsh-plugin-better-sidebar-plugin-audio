@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>dsh-plugin-better-sidebar-plugin-audio — visual harness</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+    background: #0b0d12;
+    color: #e8ecf5;
+  }
+  .harness {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    height: 100vh;
+    box-sizing: border-box;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .panel > header {
+    flex: 0 0 auto;
+    padding: 4px 8px;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.25);
+    user-select: text;
+  }
+  .panel > .dsh-audio { flex: 1 1 auto; min-height: 0; }
+
+  .skin-dark {
+  /* Every token is a var() chain, like a real host skin. */
+  --ds-ink-strong: rgb(233, 238, 248);
+  --ds-ink-soft: rgb(184, 194, 212);
+  --ds-brand: rgb(255, 64, 200);
+  --ds-accent: rgb(255, 158, 110);
+  --ds-hairline: rgba(206, 216, 236, 0.24);
+  --ds-border: rgba(206, 216, 236, 0.42);
+  --ds-layer-1: rgb(23, 26, 34);
+  --ds-layer-2: rgb(31, 35, 45);
+  --ds-layer-3: rgb(39, 44, 56);
+  --ds-success: rgb(64, 232, 172);
+  --ds-success-soft: rgba(64, 232, 172, 0.26);
+  --ds-warn: rgb(255, 202, 122);
+  --ds-error: rgb(255, 122, 152);
+  --dsw-alias-label-primary: var(--ds-ink-strong);
+  --dsw-alias-label-secondary: var(--ds-ink-soft);
+  --dsw-alias-label-tertiary: var(--ds-ink-soft);
+  --dsw-alias-brand-primary: var(--ds-brand);
+  --dsw-alias-accent: var(--ds-accent);
+  --dsw-alias-accent-soft: rgba(255, 158, 110, 0.22);
+  --dsw-alias-hairline: var(--ds-hairline);
+  --dsw-alias-border-l1: var(--ds-hairline);
+  --dsw-alias-border-l2: var(--ds-border);
+  --dsw-alias-bg-base: rgb(14, 16, 21);
+  --dsw-alias-bg-layer-1: var(--ds-layer-1);
+  --dsw-alias-bg-layer-2: var(--ds-layer-2);
+  --dsw-alias-bg-layer-3: var(--ds-layer-3);
+  --dsw-alias-interactive-bg-hover: rgba(255, 255, 255, 0.12);
+  --dsw-alias-state-success-primary: var(--ds-success);
+  --dsw-alias-state-success-tertiary: var(--ds-success-soft);
+  --dsw-alias-state-warn-primary: var(--ds-warn);
+  --dsw-alias-state-error-primary: var(--ds-error);
+  --dsw-alias-danger: var(--ds-error);
+    background: var(--dsw-alias-bg-base);
+    color: var(--dsw-alias-label-primary);
+  }
+
+  .skin-light {
+    --ds-ink-strong: rgb(26, 31, 42);
+    --ds-ink-soft: rgb(72, 82, 100);
+    --ds-brand: rgb(9, 132, 88);
+    --ds-accent: rgb(196, 84, 12);
+    --ds-hairline: rgba(40, 48, 64, 0.24);
+    --ds-border: rgba(40, 48, 64, 0.46);
+    --ds-layer-1: rgb(246, 247, 250);
+    --ds-layer-2: rgb(236, 238, 244);
+    --ds-layer-3: rgb(226, 229, 238);
+    --ds-success: rgb(12, 118, 92);
+    --ds-success-soft: rgba(12, 118, 92, 0.22);
+    --ds-warn: rgb(154, 82, 8);
+    --ds-error: rgb(176, 38, 62);
+    --dsw-alias-label-primary: var(--ds-ink-strong);
+    --dsw-alias-label-secondary: var(--ds-ink-soft);
+    --dsw-alias-label-tertiary: var(--ds-ink-soft);
+    --dsw-alias-brand-primary: var(--ds-brand);
+    --dsw-alias-accent: var(--ds-accent);
+    --dsw-alias-accent-soft: rgba(196, 84, 12, 0.18);
+    --dsw-alias-hairline: var(--ds-hairline);
+    --dsw-alias-border-l1: var(--ds-hairline);
+    --dsw-alias-border-l2: var(--ds-border);
+    --dsw-alias-bg-base: rgb(250, 250, 253);
+    --dsw-alias-bg-layer-1: var(--ds-layer-1);
+    --dsw-alias-bg-layer-2: var(--ds-layer-2);
+    --dsw-alias-bg-layer-3: var(--ds-layer-3);
+    --dsw-alias-interactive-bg-hover: rgba(0, 0, 0, 0.08);
+    --dsw-alias-state-success-primary: var(--ds-success);
+    --dsw-alias-state-success-tertiary: var(--ds-success-soft);
+    --dsw-alias-state-warn-primary: var(--ds-warn);
+    --dsw-alias-state-error-primary: var(--ds-error);
+    --dsw-alias-danger: var(--ds-error);
+    background: var(--dsw-alias-bg-base);
+    color: var(--dsw-alias-label-primary);
+  }
+
+  /*
+   * A skin shaped like the REAL host: only the tokens dsh web actually defines,
+   * written as plain hex/rgba (not var() chains), and — crucially — with NO
+   * --dsw-alias-accent / -accent-soft / -hairline at all, and the brand colour
+   * equal to the label colour.
+   *
+   * This panel is the regression sentinel for two failures the two skins above
+   * can never show, because they define every token:
+   *   1. a probe that treats a missing token as "resolved" — the playhead,
+   *      grid and selection then paint in a fully transparent colour;
+   *   2. an RMS body that inherits the waveform colour — the lane then collapses
+   *      into a single solid block with no visible dynamics.
+   */
+  .skin-host {
+    --dsw-alias-label-primary: #0f1115;
+    --dsw-alias-brand-primary: #0f1115;
+    --dsw-alias-bg-base: #ffffff;
+    --dsw-alias-bg-layer-1: #ffffff;
+    --dsw-alias-border-l1: #0000000a;
+    --dsw-alias-border-l2: #0000001a;
+    --dsw-alias-state-success-primary: #22c55e;
+    background: var(--dsw-alias-bg-base);
+    color: var(--dsw-alias-label-primary);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="bundle.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Standalone install root: this plugin is its own pnpm project, so a bare
+# `pnpm install` here never walks up into another checkout's workspace.
+autoInstallPeers: false
+allowBuilds:
+  esbuild: true
