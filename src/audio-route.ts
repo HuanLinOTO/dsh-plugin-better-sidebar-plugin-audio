@@ -56,8 +56,8 @@ export interface AudioRouteContext {
   webServer?: { register(route: WebServerRoute): () => void } | undefined
   /** The session store (`ctx.sessions`), read only for the authoritative cwd. */
   sessions?: { get(id: string): { header?: { cwd?: string } } | undefined } | undefined
-  /** The web runtime (`ctx.webRuntime`), read only for `trustedHosts`. */
-  webRuntime?: { trustedHosts?: readonly string[] } | undefined
+  /** The web startup (`ctx.webStartup`), read only for `trustedHosts`. */
+  webStartup?: { trustedHosts?: readonly string[] } | undefined
 }
 
 /** Wire error with a stable code, mirroring better-sidebar's error envelope. */
@@ -278,7 +278,7 @@ export async function handleAudioRequest(
   response: ServerResponse,
   ctx: AudioRouteContext,
 ): Promise<void> {
-  if (!isTrustedAudioRequest({ headers: request.headers }, ctx.webRuntime?.trustedHosts ?? [])) {
+  if (!isTrustedAudioRequest({ headers: request.headers }, ctx.webStartup?.trustedHosts ?? [])) {
     writeError(response, 403, 'forbidden', 'refused by the browser-trust fence')
     return
   }

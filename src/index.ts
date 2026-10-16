@@ -19,9 +19,9 @@ export const name = 'dsh-plugin-better-sidebar-plugin-audio'
 /**
  * Services required before mounting: the webserver (the media route), the
  * session store (the authoritative cwd of the requesting session) and the web
- * runtime (`trustedHosts` for the fence).
+ * startup (`trustedHosts` for the fence).
  */
-export const inject = ['webServer', 'sessions', 'webRuntime']
+export const inject = ['webServer', 'sessions', 'webStartup']
 
 /**
  * Mount the media route.

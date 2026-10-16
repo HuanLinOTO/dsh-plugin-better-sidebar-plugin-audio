@@ -52,8 +52,8 @@ export interface AudioRouteContext {
             };
         } | undefined;
     } | undefined;
-    /** The web runtime (`ctx.webRuntime`), read only for `trustedHosts`. */
-    webRuntime?: {
+    /** The web startup (`ctx.webStartup`), read only for `trustedHosts`. */
+    webStartup?: {
         trustedHosts?: readonly string[];
     } | undefined;
 }

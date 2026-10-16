@@ -56,7 +56,7 @@ function fakeContext(cwd: string | undefined, sessions: Map<string, { header?: {
   if (cwd !== undefined) sessions.set('s1', { header: { cwd } })
   return {
     sessions: { get: (id: string) => sessions.get(id) },
-    webRuntime: { trustedHosts: [] },
+    webStartup: { trustedHosts: [] },
   }
 }
 

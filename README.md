@@ -104,7 +104,7 @@ pnpm run bundle:client # 只重打 client bundle（快速迭代）
 
 ```
 src/
-├─ index.ts             host 入口：注册媒体路由（inject: webServer, sessions, webRuntime）
+├─ index.ts             host 入口：注册媒体路由（inject: webServer, sessions, webStartup）
 ├─ audio-route.ts       Range 解析、路径/cwd 解析、meta 与 media 处理
 ├─ trust-fence.ts       浏览器信任栅栏（Host 回环 / trustedHosts / Origin / sec-fetch-site）
 ├─ audio-exts.ts        扩展名与 MIME 的单一事实源（host 白名单 = client 注册表）
@@ -150,7 +150,7 @@ dev/
 
 ## 安全
 
-- 所有请求先过**浏览器信任栅栏**（与 DSH `/api` 网关、better-sidebar `/sidebar/*` 同语义）：Host 必须是回环或 `webRuntime.trustedHosts` 中的 authority；带 `sec-fetch-site: cross-site` 一律拒绝；带 `Origin` 时必须与 Host 主机名一致（桌面壳的 `dsh-app://app` 例外）。这是反 DNS-rebinding / 反跨站读取的栅栏，不是身份认证。
+- 所有请求先过**浏览器信任栅栏**（与 DSH `/api` 网关、better-sidebar `/sidebar/*` 同语义）：Host 必须是回环或 `webStartup.trustedHosts` 中的 authority；带 `sec-fetch-site: cross-site` 一律拒绝；带 `Origin` 时必须与 Host 主机名一致（桌面壳的 `dsh-app://app` 例外）。这是反 DNS-rebinding / 反跨站读取的栅栏，不是身份认证。
 - 路由**只服务音频扩展名**（`audio-exts.ts` 白名单），拿不到别的东西——即使某个页面绕过了栅栏，它也无法把这条路由当作通用文件读取口。
 - 只接受 `GET` / `HEAD`，只读，无写入面。
 - 路径解析与 better-sidebar v0.23.0+ 一致：相对路径基于会话权威 `cwd`（会话头 → 调用方 `cwd` → `process.cwd()`），绝对路径原样，`~` 展开，**不做包含检查**（`cwd` 是基准而非边界）。越界读取不构成新增权限面：同源页面本来就能用 `/sidebar/api/fs.read` 读任意文件。
